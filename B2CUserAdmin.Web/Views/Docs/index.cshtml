@@ -1,0 +1,102 @@
+@{
+    ViewData["Title"] = "Documentation";
+}
+<h1>User Admin Setup & Documentation Guide</h1>
+<p class="lead">This page outlines the necessary steps and processes to follow in order to successfully set up your
+    account for the User Admin application. If you run into issues or need support, please reach out at <a
+        href="mailto:clint@parkasoftware.com">clint@parkasoftware.com</a>.</p>
+
+<h2>Prerequisites</h2>
+<p>Before you can successfully utilize the User Admin features, ensure that you have the following prerequisites:</p>
+<ul>
+    <li>Access to an Azure B2C subscription with administrative rights or the appropriate rights to configure the below
+        steps.
+        <ul>
+            <li>Created and access to a valid Azure B2C tenant.</li>
+            <li>Created a new app registration within the tenant for this software.</li>
+            <li>Recorded client id, client secret, and tenant id.</li>
+        </ul>
+    </li>
+    <li>Basic understanding of Azure B2C user management.</li>
+</ul>
+
+<h2>Registering a New App in Azure B2C Tenant</h2>
+<p>You will need to register a new app in your Azure B2C tenant for this application to function properly, perform the
+    following steps:</p>
+<ol>
+    <li>Sign into the Azure portal and navigate to the <strong>Azure AD B2C service</strong>.
+    </li>
+    <li>Select <strong>App registrations</strong> and then click on <strong>New registration</strong>.</li>
+    <li>Provide a name for your application and select the appropriate supported account types.</li>
+    <li>Click on <strong>Register</strong> to create the new app registration.</li>
+    <li>Record the client id of the newly created app. You will need this for the User Admin to access your B2C tenant.
+    </li>
+</ol>
+
+<h2>Creating a Client Secret and get the Tenant Id</h2>
+<p>After registering the app in Azure B2C, follow these steps to obtain the Tenant Id and Client Secret:</p>
+<ol>
+    <li>Note down the Application or Client Id from the newly registered app, this serves as the Client ID for the User
+        Admin app.</li>
+    <li>Navigate into the <strong>Certificates & secrets section</strong>, click <strong>New client secret</strong>.
+        Give it a name and select the
+        expiration time frame. Click <strong>Add</strong> and note down the
+        generated secret value.</li>
+    <li>Obtain the Azure B2C Tenant Id. To obtain the Azure B2C Tenant Id:
+        <ul>
+            <li>
+                Click your user name in the upper right corner of the Azure Portal
+            </li>
+            <li>A drop down will appear, from this drop down select <strong>Switch directory</strong></li>
+            <li>In the <strong>Switch directory</strong> window you will see the list of your tenants below. The Tenant
+                Id is also called
+                the Directory Id.</li>
+            <li>
+                <img class="p-4" src="/assets/img/tenantid.png" alt="How to find B2C tenant id />" </li>
+        </ul>
+    </li>
+</ol>
+
+<h2>Setting Appropriate API Permissions</h2>
+<p>Ensure that your newly created app has the following delegated Graph API permissions. These permissions can be set in
+    the <strong>API permissions</strong> section of your app registration in the Azure portal.</p>
+<ul>
+    <li>From your newly created app, select <strong>API permissions</strong>. </li>
+    <li>Click the <strong>Add a permission</strong> button.</li>
+    <li>Within the <strong>Request API permissions --> Microsoft APIs</strong> screen, click the <strong>Microsoft Graph
+            API</strong>
+        button.</li>
+    <li>Then click <strong>Application permissions</strong>.</li>
+    <li>A <strong>Select permissions</strong> section will appear. Search and select the following permissions:
+        <ul>
+            <li>
+                <strong>User.ReadWrite.All</strong>: This permission allows the User Admin application to read and write
+                all
+                users’ full
+                profiles.
+            </li>
+            <li><strong>IdentityFlow.Read.All</strong>: This permission allows the application to read all identity
+                flows.</li>
+            <li><strong>Applications.Read.All</strong>: This permission allows the application to read the applications
+                in order
+                to find
+                the
+                specific Azure B2C custom properties application
+                This application is where the custom properties and extension attributes are stored. Without this
+                permission the
+                User Admin application will not
+                be able to read custom properties or extension attributes.</li>
+        </ul>
+</ul>
+
+<h2>Set Client Id, Client Secret and Tenant Id in the application</h2>
+<p>Log into the User Admin app and navigate to the <a href="/identity/account/manage/">account settings page</a>. There
+    you will find
+    three input boxes for you to save your Client Id, Client Secret and Tenant Id.</p>
+<p>The application uses the Client Credentials OAuth flow to connect to the Azure AD B2C tenant to manage your B2C
+    users. You can learn
+    more about the <a
+        href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow"
+        target="_blank">Client Credentials OAuth flow here</a>.
+</p>
+<p>After the these steps have been complete you are not ready to view and modify your Azure B2C users.</p>

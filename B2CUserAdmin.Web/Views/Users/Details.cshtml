@@ -1,0 +1,66 @@
+@model B2CUserAdmin.Models.DetailUserViewModel;
+
+@{
+    ViewData["Title"] = $"{Model.User.DisplayName} - User Details";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>@Model.User.DisplayName</h1>
+    <div class="wrapper">
+        <a href="/users" class="btn btn-secondary">Back to List</a>&nbsp;
+        <a href="/users/edit/@Model.User.Id" class="btn btn-primary">Edit User</a>
+
+    </div>
+</div>
+<hr />
+<!-- Identity Section -->
+<div class="row mt-2">
+    <div class="col-md-6">
+        <h3>Identity</h3>
+        <p><strong>Display name:</strong> @Model.User.DisplayName</p>
+        <p><strong>First name:</strong> @Model.User.GivenName</p>
+        <p><strong>Last name:</strong> @Model.User.Surname</p>
+        <p><strong>User principal name:</strong> @Model.User.UserPrincipalName</p>
+        <p><strong>Object ID:</strong> @Model.User.Id</p>
+        <p><strong>User type:</strong> @Model.User.UserType</p>
+        <p><strong>Account enabled:</strong> @(Model.User.AccountEnabled.HasValue ? (Model.User.AccountEnabled.Value
+            ? "Yes" :
+            "No") : "Not available")</p>
+    </div>
+    <!-- Custom Attributes -->
+    <div class="col-md-6">
+        <h3>Custom Attributes</h3>
+        @foreach (var customAttribute in Model.CustomAttributes)
+        {
+            <p><strong>@customAttribute.DisplayName:&nbsp;</strong>@Model.User.AdditionalData.Where(x => x.Key ==
+            customAttribute.Id).FirstOrDefault().Value</p>
+        }
+
+    </div>
+</div>
+<div class="row">
+    <!-- Contact Information Column -->
+    <div class="col-md-6">
+        <h3>Contact Information</h3>
+        <p><strong>Email:</strong> @Model.User.Mail</p>
+        <p><strong>Mobile phone:</strong> @Model.User.MobilePhone</p>
+        <p><strong>Other emails:</strong> @string.Join(", ", Model.User.OtherMails)</p>
+        <p><strong>Fax number:</strong> @Model.User.FaxNumber</p>
+    </div>
+
+    <!-- Job Information Column -->
+    <div class="col-md-6">
+        <h3>Job Information</h3>
+        <p><strong>Job title:</strong> @Model.User.JobTitle</p>
+        <p><strong>Company name:</strong> @Model.User.CompanyName</p>
+        <p><strong>Department:</strong> @Model.User.Department</p>
+        <p><strong>Employee ID:</strong> @Model.User.EmployeeId</p>
+        <p><strong>Employee type:</strong> @Model.User.EmployeeType</p>
+        <p><strong>Office location:</strong> @Model.User.OfficeLocation</p>
+        </p>
+    </div>
+</div>
+<div class="d-flex justify-content-end">
+    <a href="/users" class="btn btn-secondary">Back to List</a>&nbsp;
+    <a href="/users/edit/@Model.User.Id" class="btn btn-primary">Edit User</a>
+</div>

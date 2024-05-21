@@ -1,0 +1,178 @@
+@model B2CUserAdmin.Models.EditUserViewModel;
+
+@{
+    ViewData["Title"] = $"{Model.DisplayName} - Edit User";
+}
+
+<form asp-action="Edit" method="post" class="container mt-4">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Edit @Model.DisplayName</h1>
+        <div class="wrapper d-none d-sm-none d-md-block">
+            <a href="/users" class="btn btn-secondary">Back to List</a>&nbsp;
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </div>
+    <hr />
+
+    <!-- Identity Section -->
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <h3>Identity</h3>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.DisplayName, "Display Name")
+                @Html.EditorFor(model => model.DisplayName, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.GivenName, "Given Name")
+                @Html.EditorFor(model => model.GivenName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Surname, "Surname")
+                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.AccountEnabled, "Account Enabled")
+                @Html.DropDownListFor(model => model.AccountEnabled,
+                         new SelectList(
+                         new List<object>
+                {
+                new { Value = "true", Text = "Enabled" },
+                new { Value = "false", Text = "Disabled" }
+                },
+                         "Value", "Text",
+                         Model.AccountEnabled.HasValue && Model.AccountEnabled.Value ? "true" : "false"),
+                         new { @class = "form-select" })
+
+            </div>
+
+
+        </div>
+
+        <!-- Custom Attributes Column -->
+        <div class="col-md-6">
+            <h3>Custom Attributes</h3>
+            @foreach (var customAttribute in Model.CustomAttributes)
+            {
+                <div class="mb-3">
+                    <label>@customAttribute.DisplayName</label>
+
+                    @if (customAttribute.DataType == Microsoft.Graph.Models.IdentityUserFlowAttributeDataType.Boolean)
+                    {
+
+                        bool isSelected = Model.AdditionalData.ContainsKey(customAttribute.Id) &&
+                        bool.Parse(Model.AdditionalData[customAttribute.Id].ToString().Trim());
+
+
+                        <select name="@($"AdditionalData[{customAttribute.Id}]")"
+                            id="@($"AdditionalData[{customAttribute.Id}]")" class="form-select">
+                            @if (isSelected)
+                            {
+                                <option value="true" selected>Yes</option>
+                                <option value="false">No</option>
+                            }
+                            else
+                            {
+                                <option value="true">Yes</option>
+                                <option value="false" selected>No</option>
+                            }
+                        </select>
+
+
+                    }
+                    else if (customAttribute.DataType == Microsoft.Graph.Models.IdentityUserFlowAttributeDataType.String)
+                    {
+                        <input type="text" name="@($"AdditionalData[{customAttribute.Id}]")"
+                            id="@($"AdditionalData[{customAttribute.Id}]")"
+                            value="@(Model.AdditionalData.ContainsKey(customAttribute.Id) ? Model.AdditionalData[customAttribute.Id].ToString().Trim() : "") "
+                            class="form-control" />
+                    }
+                </div>
+            }
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <!-- Contact Information Column -->
+        <div class="col-md-6">
+            <h3>Contact Information</h3>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Mail, "Mail")
+                @Html.EditorFor(model => model.Mail, new
+                    {
+                        htmlAttributes = new { @class = "form-control" },
+                        @readonly
+                         = "readonly"
+                    })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.MobilePhone, "Mobile Phone")
+                @Html.EditorFor(model => model.MobilePhone, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.FaxNumber, "Fax Number")
+                @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <!-- Job Information Column -->
+        <div class="col-md-6">
+            <h3>Job Information</h3>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.JobTitle, "Job Title")
+                @Html.EditorFor(model => model.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.CompanyName, "Company Name")
+                @Html.EditorFor(model => model.CompanyName, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Department, "Department")
+                @Html.EditorFor(model => model.Department, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.EmployeeId, "Employee ID")
+                @Html.EditorFor(model => model.EmployeeId, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.EmployeeType, "Employee Type")
+                @Html.EditorFor(model => model.EmployeeType, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.OfficeLocation, "Office Location")
+                @Html.EditorFor(model => model.OfficeLocation, new
+                    {
+                        htmlAttributes = new { @class = "form-control" }
+                    })
+            </div>
+        </div>
+    </div>
+    <div class="wrapper float-end">
+        <a href="/users" class="btn btn-secondary">Back to List</a>&nbsp;
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>

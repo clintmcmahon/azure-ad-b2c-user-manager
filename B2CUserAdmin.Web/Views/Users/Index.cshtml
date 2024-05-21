@@ -1,0 +1,45 @@
+@model IEnumerable<Microsoft.Graph.Models.User>
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Identity/User Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.DisplayName</td>
+                <td>
+                    @{
+    var displayIdentities = user.Identities?
+        .Where(identity => identity.SignInType != "userPrincipalName")
+        .Select(identity => $"{identity.SignInType}: {identity.IssuerAssignedId} ({identity.Issuer})");
+
+    var displayOtherMails = user.OtherMails;
+}
+
+@if (displayIdentities != null && displayIdentities.Any())
+{
+    <p>Identities: @string.Join(", ", displayIdentities)</p>
+}
+
+@if (displayOtherMails != null && displayOtherMails.Any())
+{
+    <p>Other Emails: @string.Join(", ", displayOtherMails)</p>
+}
+                </td>
+                <td><a asp-action="Details" asp-route-id="@user.Id">View</a> | <a asp-action="Edit" asp-route-id="@user.Id">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
