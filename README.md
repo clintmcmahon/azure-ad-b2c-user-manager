@@ -53,7 +53,7 @@ Ensure that your newly created app has the following delegated Graph API permiss
 
 ## Set Client Id, Client Secret, and Tenant Id in the Application
 
-Log into the User Admin app and navigate to the [account settings page](./identity/account/manage/). There you will find three input boxes for you to save your Client Id, Client Secret, and Tenant Id.
+Open the appsettings.json file from the root of the web project. There you will enter the client id, client secret and tenant id from the previous steps into the appropriate fields under `AzureADB2C` node.
 
 The application uses the Client Credentials OAuth flow to connect to the Azure AD B2C tenant to manage your B2C users. You can learn more about the [Client Credentials OAuth flow here](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow).
 
