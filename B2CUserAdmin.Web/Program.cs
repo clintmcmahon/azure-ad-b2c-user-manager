@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var environment = builder.Environment;
 
+builder.Services.AddScoped<B2CUsersService>();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 

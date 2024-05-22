@@ -7,8 +7,9 @@ namespace B2CUserAdmin.Web.Services;
 public class B2CUsersService
 {
     private readonly GraphServiceClient _graphServiceClient;
+    private readonly IConfiguration _configuration;
 
-    public B2CUsersService(string clientId, string clientSecret, string tenantId)
+    public B2CUsersService(IConfiguration configuration)
     {
         // The client credentials flow requires that you request the
         // /.default scope, and pre-configure your permissions on the
@@ -22,11 +23,16 @@ public class B2CUsersService
             AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
         };
 
+        var tenantId = configuration["AzureAdB2C:TenantId"];
+        var clientId = configuration["AzureAdB2C:ClientId"];
+        var clientSecret = configuration["AzureAdB2C:ClientSecret"];
+
         // https://learn.microsoft.com/dotnet/api/azure.identity.clientsecretcredential
         var clientSecretCredential = new ClientSecretCredential(
             tenantId, clientId, clientSecret, options);
 
         _graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
+        _configuration = configuration;
 
     }
 
@@ -57,10 +63,7 @@ public class B2CUsersService
             "identities", "displayName", "givenName", "surname", "userPrincipalName", "accountEnabled",
             "ageGroup", "consentProvidedForMinor", "country", "creationType", "department",
             "employeeId", "faxNumber", "legalAgeGroupClassification", "mail",
-            "mobilePhone", "officeLocation", "onPremisesDistinguishedName", "onPremisesDomainName",
-            "onPremisesExtensionAttributes", "onPremisesImmutableId", "onPremisesLastSyncDateTime",
-            "onPremisesSamAccountName", "onPremisesSecurityIdentifier", "onPremisesSyncEnabled",
-            "onPremisesUserPrincipalName", "otherMails", "passwordPolicies", "postalCode",
+            "mobilePhone", "officeLocation", "otherMails", "passwordPolicies", "postalCode",
             "preferredDataLocation", "preferredLanguage", "proxyAddresses", "showInAddressList",
             "state", "streetAddress", "city", "zipCode", "usageLocation", "id", "userType", "jobTitle", "companyName", "employeeType","businessPhone","mobilePhone"
         };
